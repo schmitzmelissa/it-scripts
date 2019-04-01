@@ -25,7 +25,7 @@ MsgBox,,, "On your marks... (Get set and GO)"
 WinActivate, Assets
 
 ; Key delay after striking hotkey
-SetKeyDelay, 500
+SetKeyDelay, 50
 
 ; This script searches for asset tags from a spreadsheet to look for the operating system in ServiceNow
 
@@ -35,7 +35,9 @@ SetKeyDelay, 500
 
 ; Scrolls to the last filled entry in column
 	Send, {ctrl down}
-	Send, {down 2}
+	Send, {down}
+	Sleep, 100
+	Send, {down}
 	Send, {ctrl up}
 
 ; Goes to the next blank comment
@@ -53,11 +55,20 @@ Loop ,
 	; Copies asset tag	
 	Send, c									; could bracket c... maybe... idk		; set key delay
 	Send, {ctrl up}
+	
+	If Clipboard = 0
+	{
+		MsgBox,,, "I'm all done!"
+		ExitApp
+	}
 
 	; Switches to ServiceNow window
 	Send, {alt down}
 	Send, {tab} 
 	Send, {alt up}
+	
+	; Key Delay increased for clicking
+	SetKeyDelay, 250
 	
 	; Finds Asset Management page
 	Loop,
@@ -124,12 +135,14 @@ Loop ,
 	*/
 	
 	; Loop to verify that the page loaded before moving on to scroll
-		Loop, 5
+		Loop, 2
 	{
 		ImageSearch, X, Y, 0, 0, %A_ScreenWidth%, %A_ScreenHeight%, Imgs\loaded_page.png
-		Sleep, 1000 ; sleep 1 sec
+		; Sleep, 1000 ; sleep 1 sec
 	}
 
+	Sleep, 1000
+	
 	; If in stock and quarantined, make a note of it
 	state := ""
 	Loop, 5
@@ -144,9 +157,7 @@ Loop ,
 		}
 	}
 
-	Send, {pgdn}
-	Sleep, 3000 ; sleep 3 secs
-	Send, {pgdn}
+	Send, {pgdn 2}
 
 	; Scrolls down to ensure the hardware tab is selected
 	Loop, 5
@@ -162,7 +173,14 @@ Loop ,
 				break
 		}
 	}
-
+	
+	; Scrolls down after bottom of page loads
+	Loop, 5
+	{
+		ImageSearch, X, Y, 0, 0, %A_ScreenWidth%, %A_ScreenHeight%, Imgs\bottom_loaded.png
+	}
+	Send, {pgdn}
+	
 	; Clicks the asset tag link to view hardware
 	Loop,
 	{
@@ -177,6 +195,7 @@ Loop ,
 		}
 	}
 
+	
 	Sleep, 1000 ; sleep a sec
 
 	; Check if Win7
@@ -208,6 +227,9 @@ Loop ,
 
 	Comment = %Comment% %lease% %state% %os% -mas
 	MsgBox,,, %Comment%
+	
+	; Hurry uppppppp
+	SetKeyDelay, 50
 
 	; Switches back to spreadsheet
 	Send, {alt down}
