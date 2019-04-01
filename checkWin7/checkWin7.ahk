@@ -118,8 +118,17 @@ Loop ,
 		}
 	}
 
-	; Wait 3.5 seconds to load
-	Sleep, 3500
+	/*
+	; Wait 4 seconds to load
+	Sleep, 4000 + (100 * %successMultiplier%)
+	*/
+	
+	; Loop to verify that the page loaded before moving on to scroll
+		Loop, 5
+	{
+		ImageSearch, X, Y, 0, 0, %A_ScreenWidth%, %A_ScreenHeight%, Imgs\loaded_page.png
+		Sleep, 1000 ; sleep 1 sec
+	}
 
 	; If in stock and quarantined, make a note of it
 	state := ""
@@ -222,7 +231,16 @@ Loop ,
 	Send, {down}
 	
 	loopSuccess += 1
+	successMultiplier = %loopSuccess%
 	GuiControl,, loopSuccess, Successes: %loopSuccess%
+	
+	; Creates extra load time after lease click with each successive run until reaches max value
+	Loop, 1
+	{
+		if (loopSuccess > 15){
+			successMultiplier = 15
+		}
+	}
 } Until Clipboard = ""
 /*
 Works up to this point! :) Testing complete.
