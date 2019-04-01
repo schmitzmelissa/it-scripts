@@ -7,6 +7,23 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; Hotkey to activate script
 ^`::
 
+; Initialize loop success tally
+loopSuccess := 0
+
+; ----- GUI -----
+Gui, new, , Win7 Inspector
+Gui, Show, w200 h50
+Gui +AlwaysOnTop -MaximizeBox -MinimizeBox
+Gui, Show, x0 y0 ; Top left
+Gui, Show, NA ; Shows without activating
+Gui, Add, Text, vloopSuccess, Successes: %loopSuccess%
+
+; Message to activate proper windows
+MsgBox,,, "On your marks... (Get set and GO)"
+
+; Make "Assets" the active window
+WinActivate, Assets
+
 ; Key delay after striking hotkey
 SetKeyDelay, 500
 
@@ -23,20 +40,6 @@ SetKeyDelay, 500
 
 ; Goes to the next blank comment
 Send, {down}
-
-/*
-; Initialize loop success tally
-loopSuccess := 0
-
-; ----- GUI -----
-
-Gui, new, , Win7 Inspector
-Gui, Show, w200 h100
-Gui +AlwaysOnTop -MaximizeBox -MinimizeBox
-Gui, Show, x0 y0 ; Top left
-Gui, Show, NA ; Shows without activating
-Gui, Add, Text, vloopSuccess, Sucessful Runs: 
-*/
 
 Loop ,
 {	
@@ -89,8 +92,8 @@ Loop ,
 	; Searches for asset tag
 	Send, {enter}
 
-	; Wait 0.4 seconds to load
-	Sleep, 400
+	; Wait 1.5 seconds to load
+	Sleep, 1500
 
 	; Finds link to click, then clicks it. If it can't find the image, ... meh
 	lease := ""
@@ -100,7 +103,7 @@ Loop ,
 		
 		If (ErrorLevel = 0)
 		{
-			Y := Y + 90 ; maybe between 80-100 ???
+			Y := Y + 80 ; maybe between 70-90
 			X := X + 5
 			Click, %X%, %Y%
 				break
@@ -177,7 +180,7 @@ Loop ,
 		If (ErrorLevel = 0)
 		{
 			os := "win7"
-			MsgBox,,, "It's Win7. Ew."
+			; MsgBox,,, "It's Win7. Ew."
 				break
 		}
 	}
@@ -219,7 +222,7 @@ Loop ,
 	Send, {down}
 	
 	loopSuccess += 1
-	GuiControl,, loopSuccess, Successful Runs: %loopSuccess%
+	GuiControl,, loopSuccess, Successes: %loopSuccess%
 } Until Clipboard = ""
 /*
 Works up to this point! :) Testing complete.
