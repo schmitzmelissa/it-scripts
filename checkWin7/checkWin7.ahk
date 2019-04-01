@@ -16,7 +16,7 @@ Gui, Show, w200 h50
 Gui +AlwaysOnTop -MaximizeBox -MinimizeBox
 Gui, Show, x0 y0 ; Top left
 Gui, Show, NA ; Shows without activating
-Gui, Add, Text, vloopSuccess, Successes: %loopSuccess%
+Gui, Add, Text, vloopSuccess, Successes: %loopSuccess%  !
 
 ; Message to activate proper windows
 MsgBox,,, "On your marks... (Get set and GO)"
@@ -92,8 +92,8 @@ Loop ,
 	; Searches for asset tag
 	Send, {enter}
 
-	; Wait 1.5 seconds to load
-	Sleep, 1500
+	; Wait 1 second to load
+	Sleep, 1000
 
 	; Finds link to click, then clicks it. If it can't find the image, ... meh
 	lease := ""
@@ -118,8 +118,8 @@ Loop ,
 		}
 	}
 
-	; Wait 2 seconds to load
-	Sleep, 2000
+	; Wait 3.5 seconds to load
+	Sleep, 3500
 
 	; If in stock and quarantined, make a note of it
 	state := ""
@@ -136,7 +136,7 @@ Loop ,
 	}
 
 	Send, {pgdn}
-	Sleep, 2500 ; sleep 2.5 secs
+	Sleep, 3000 ; sleep 3 secs
 	Send, {pgdn}
 
 	; Scrolls down to ensure the hardware tab is selected
@@ -157,12 +157,12 @@ Loop ,
 	; Clicks the asset tag link to view hardware
 	Loop,
 	{
-		ImageSearch, X, Y, 0, 0, %A_ScreenWidth%, %A_ScreenHeight%, Imgs\hardware_asset_tag.png
+		ImageSearch, X, Y, 0, 0, %A_ScreenWidth%, %A_ScreenHeight%, Imgs\hardware_info.png
 		
 		If (ErrorLevel = 0)
 		{
-			Y := Y + 65	; 50-60 px
-			X := X + 60 ; 50-60 px
+			Y := Y + 5
+			X := X + 50
 			Click, %X%, %Y%
 				break
 		}
