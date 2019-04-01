@@ -103,8 +103,8 @@ Loop ,
 		
 		If (ErrorLevel = 0)
 		{
-			Y := Y + 80 ; maybe between 70-90
-			X := X + 5
+			Y := Y + 5 ;
+			X := X + 50
 			Click, %X%, %Y%
 				break
 		}
@@ -127,6 +127,7 @@ Loop ,
 		Loop, 5
 	{
 		ImageSearch, X, Y, 0, 0, %A_ScreenWidth%, %A_ScreenHeight%, Imgs\loaded_page.png
+		Sleep, 1000 ; sleep 1 sec
 	}
 
 	; If in stock and quarantined, make a note of it

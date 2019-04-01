@@ -103,8 +103,8 @@ Loop ,
 		
 		If (ErrorLevel = 0)
 		{
-			Y := Y + 80 ; maybe between 70-90
-			X := X + 5
+			Y := Y + 5 ;
+			X := X + 50
 			Click, %X%, %Y%
 				break
 		}
