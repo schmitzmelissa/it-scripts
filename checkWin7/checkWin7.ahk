@@ -33,6 +33,8 @@ SetKeyDelay, 50
 ; Make spreadsheet window active
 ; Click on column where comments are located first
 
+/* ===== Remove comment if need to start from beginning =====
+
 ; Scrolls to the last filled entry in column
 	Send, {ctrl down}
 	Send, {down}
@@ -42,6 +44,8 @@ SetKeyDelay, 50
 
 ; Goes to the next blank comment
 Send, {down}
+
+*/
 
 Loop ,
 {	
@@ -53,7 +57,7 @@ Loop ,
 	Send, {left 5}
 
 	; Copies asset tag	
-	Send, c									; could bracket c... maybe... idk		; set key delay
+	Send, c
 	Send, {ctrl up}
 	
 	If Clipboard = 0
@@ -68,7 +72,7 @@ Loop ,
 	Send, {alt up}
 	
 	; Key Delay increased for clicking
-	SetKeyDelay, 250
+	SetKeyDelay, 350
 	
 	; Finds Asset Management page
 	Loop,
@@ -135,13 +139,16 @@ Loop ,
 	*/
 	
 	; Loop to verify that the page loaded before moving on to scroll
-		Loop, 2
-	{
+	Loop,
+	{	
 		ImageSearch, X, Y, 0, 0, %A_ScreenWidth%, %A_ScreenHeight%, Imgs\loaded_page.png
-		Sleep, 1000 ; sleep 1 sec
+		If (ErrorLevel = 0)
+		{
+				break
+		}
 	}
 
-	;vSleep, 1000
+	Sleep, 500
 	
 	; If in stock and quarantined, make a note of it
 	state := ""
@@ -175,10 +182,15 @@ Loop ,
 	}
 	
 	; Scrolls down after bottom of page loads
-	Loop, 5
+	Loop, 10
 	{
 		ImageSearch, X, Y, 0, 0, %A_ScreenWidth%, %A_ScreenHeight%, Imgs\bottom_loaded.png
+		If (ErrorLevel = 0)
+		{
+				break
+		}
 	}
+	
 	Send, {pgdn}
 	
 	; Clicks the asset tag link to view hardware
