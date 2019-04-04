@@ -1,2 +1,2 @@
-# autohotkey-it-scripts
-Autohotkey scripts to automate certain IT workflows.
+it-scripts
+Python and Autohotkey scripts to automate certain IT workflows.
